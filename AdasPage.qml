@@ -16,7 +16,7 @@ Item {
 
     Image {
         id: aDAS
-        x: 330
+        x: 338
         y: 29
         width: 351
         height: 553

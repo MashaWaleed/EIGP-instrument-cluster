@@ -16,7 +16,7 @@ Item {
 
     Image {
         id: tRIP
-        x: 290
+        x: 296
         y: 70
         width: 436
         height: 394

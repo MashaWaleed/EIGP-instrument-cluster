@@ -16,7 +16,7 @@ Item {
 
     Image {
         id: gPS
-        x: 368
+        x: 377
         y: 92
         width: 300
         height: 440
