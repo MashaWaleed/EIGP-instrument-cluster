@@ -33,6 +33,6 @@ Project {
         QT_ENABLE_HIGHDPI_SCALING: "0"
     }
 
-    importPaths: [ ".", "Component", "imports" ]
+    importPaths: [ ".", "Component" ]
     targetDirectory: "/opt/Dashboard"
 }

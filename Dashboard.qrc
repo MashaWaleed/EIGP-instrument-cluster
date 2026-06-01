@@ -22,6 +22,7 @@
         <file>icons/bottom.png</file>
         <file>icons/cloud.svg</file>
         <file>icons/desal.svg</file>
+        <file>icons/desal_backup.svg</file>
         <file>icons/feaul.svg</file>
         <file>icons/flash.png</file>
         <file>icons/flash.svg</file>
@@ -61,8 +62,6 @@
         <file>images/splash_frames/frame4.png</file>
         <file>images/splash_frames/frame5.png</file>
         <file>images/top_Icon_bar_1.png</file>
-        <file>imports/Qt3D/Examples/SceneHelper.qml</file>
-        <file>imports/Qt3D/Examples/qmldir</file>
         <file>main.qml</file>
         <file>rpi/CircularGaugeMeter.qml</file>
         <file>rpi/Component/IconButton.qml</file>
@@ -101,8 +100,6 @@
         <file>rpi/icons/icons-right/mdi_car-light-fog.svg</file>
         <file>rpi/icons/icons-right/mdi_car-light-high.svg</file>
         <file>rpi/icons/icons-right/mdi_seatbelt.svg</file>
-        <file>rpi/imports/Qt3D/Examples/SceneHelper.qml</file>
-        <file>rpi/imports/Qt3D/Examples/qmldir</file>
         <file>rpi/main.qml</file>
     </qresource>
 </RCC>

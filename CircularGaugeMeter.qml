@@ -92,83 +92,37 @@ Item {
 
         Rectangle {
             id: needleBody
+            y: -52
             width: Math.max(4, gauge.width * 0.0105)
-            height: gauge.height * 0.39
+            height: 60
+            opacity: 0.6
             radius: width / 2
-            color: gauge.needleColor
-            border.width: 1
+            border.width: 0
             border.color: Qt.rgba(220 / 255, 231 / 255, 243 / 255, 0.28)
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.verticalCenter
-            anchors.bottomMargin: gauge.height * 0.015
-        }
+            anchors.bottomMargin: 222
+            clip: false
+            gradient: Gradient {
+                GradientStop {
+                    position: 0
+                    color: "#deffffff"
+                }
 
-        Rectangle {
-            width: needleBody.width * 0.34
-            height: needleBody.height * 0.86
-            radius: width / 2
-            color: gauge.needleAccentColor
-            anchors.horizontalCenter: needleBody.horizontalCenter
-            anchors.top: needleBody.top
-            anchors.topMargin: needleBody.width * 0.55
-        }
-
-        Item {
-            width: needleBody.width * 1.9
-            height: gauge.height * 0.085
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.verticalCenter
-            anchors.topMargin: gauge.height * 0.018
-
-            Rectangle {
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.top: parent.top
-                width: parent.width
-                height: parent.height
-                radius: height / 2
-                color: Qt.rgba(212 / 255, 223 / 255, 237 / 255, 0.38)
+                GradientStop {
+                    position: 0.97865
+                    color: "#000000"
+                }
+                orientation: Gradient.Vertical
             }
-
-            Rectangle {
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.top: parent.top
-                width: parent.width * 0.45
-                height: parent.height
-                radius: height / 2
-                color: gauge.needleColor
-                opacity: 0.65
-            }
+            anchors.horizontalCenterOffset: 0
         }
-
-        Rectangle {
-            width: needleBody.width * 1.45
-            height: needleBody.width * 1.45
-            radius: width / 2
-            color: Qt.rgba(1, 1, 1, 0.14)
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: gauge.height * 0.008
-        }
-    }
-
-    Rectangle {
-        id: hubOuter
-        z: 2
-        width: Math.max(16, gauge.width * 0.082)
-        height: width
-        radius: width / 2
-        color: gauge.hubColor
-        border.width: 1
-        border.color: Qt.rgba(247 / 255, 250 / 255, 255 / 255, 0.18)
-        anchors.centerIn: parent
     }
 
     Rectangle {
         z: 3
-        width: hubOuter.width * 0.34
         height: width
         radius: width / 2
         color: "#F7FAFF"
-        anchors.centerIn: hubOuter
     }
 }
