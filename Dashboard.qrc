@@ -1,25 +1,32 @@
 <RCC>
     <qresource>
+        <file>AdasPage.qml</file>
         <file>CircularGaugeMeter.qml</file>
+        <file>Component/BottomNavItem.qml</file>
         <file>Component/CenterStatusPanel.qml</file>
         <file>Component/IconButton.qml</file>
         <file>Dashboard.qmlproject</file>
         <file>DashboardContent.qml</file>
         <file>Fontspring-DEMO-organetto-extbold.otf</file>
+        <file>GpsPage.qml</file>
         <file>GyrochromeVF-BF676cd54b0f778.ttf</file>
         <file>Organetto-BoldExt.ttf</file>
         <file>Panel.png</file>
+        <file>PsiPage.qml</file>
         <file>Speedomete-backupr.png</file>
         <file>Speedometer.png</file>
         <file>SplashScreen.qml</file>
         <file>Tacometer.png</file>
+        <file>TestingPage.qml</file>
         <file>Top Bar.png</file>
         <file>Top Bar_backup.png</file>
+        <file>TripPage.qml</file>
         <file>Venera-700.otf</file>
         <file>fontawesome.otf</file>
         <file>icons/Vector 1.png</file>
         <file>icons/Vector 1.svg</file>
         <file>icons/bottom.png</file>
+        <file>icons/bottom_bar_nav/psi_nab.svg</file>
         <file>icons/cloud.svg</file>
         <file>icons/desal.svg</file>
         <file>icons/desal_backup.svg</file>
@@ -54,6 +61,9 @@
         <file>images/ADAS.png</file>
         <file>images/EIGP.png</file>
         <file>images/Frame 50.png</file>
+        <file>images/GPS.png</file>
+        <file>images/PSI.png</file>
+        <file>images/TRIP.png</file>
         <file>images/frame2.png</file>
         <file>images/splash_frames/Gradn Vitara Logo.png</file>
         <file>images/splash_frames/frame1.png</file>

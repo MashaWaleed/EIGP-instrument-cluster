@@ -16,6 +16,7 @@ Item {
     property real speedKph: 72
     property real currentAmps: 180
     property real temperatureC: 41
+    property string currentPage: "gps"
     readonly property int batteryPercentageValue: Math.round(root.rightSideLevel * 100)
     readonly property int batteryTempValue: Math.round(root.leftSideLevel * 100)
     property string selectedGear: "D"
@@ -284,17 +285,6 @@ Item {
                     font.family: "Venera"
                     color: "#FFFFFF"
                 }
-            }
-
-            CenterStatusPanel {
-                id: centerStatusPanel
-                anchors.centerIn: parent
-                anchors.horizontalCenterOffset: 8
-                anchors.verticalCenterOffset: 86
-                z: 1
-                currentAmps: root.currentAmps
-                temperatureC: root.temperatureC
-                fontFamily: "Venera"
             }
 
             IconButton {
@@ -733,38 +723,31 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
 
-                RowLayout {
-                    spacing: 60
+                Row {
+                    height: 76
+                    spacing: 42
                     anchors.right: middle.left
-                    anchors.rightMargin: 60
+                    anchors.rightMargin: 44
                     anchors.verticalCenter: middle.verticalCenter
 
-                    IconButton {
-                        setIconSize: 32
-                        implicitHeight: 45
-                        implicitWidth: 45
-                        checkable: true
-                        iconBackground: "transparent"
-                        setIconColor: checked ? "#777781" : "#777781"
-                        text: "\uf3c5"
-                        font.bold: Font.DemiBold
-                        font.weight: Font.Normal
-                        font.family: root.iconFontFamily
-                        font.pixelSize: 32
+                    BottomNavItem {
+                        id: gps_nav
+                        glyph: "\uf3c5"
+                        fontFamily: root.iconFontFamily
+                        baseSize: 36
+                        activeSize: 46
+                        checked: root.currentPage === "gps"
+                        onClicked: root.currentPage = "gps"
                     }
 
-                    IconButton {
-                        setIconSize: 32
-                        implicitHeight: 45
-                        implicitWidth: 45
-                        checkable: true
-                        iconBackground: "transparent"
-                        setIconColor: checked ? "#777781" : "#777781"
-                        text: "\uf601"
-                        font.bold: Font.DemiBold
-                        font.weight: Font.Normal
-                        font.pixelSize: 32
-                        font.family: root.iconFontFamily
+                    BottomNavItem {
+                        id: adas_nav
+                        glyph: "\uf601"
+                        fontFamily: root.iconFontFamily
+                        baseSize: 36
+                        activeSize: 46
+                        checked: root.currentPage === "adas"
+                        onClicked: root.currentPage = "adas"
                     }
                 }
 
@@ -843,38 +826,30 @@ Item {
                     }
                 }
 
-                RowLayout {
-                    spacing: 60
+                Row {
+                    height: 76
+                    spacing: 42
                     anchors.left: middle.right
-                    anchors.leftMargin: 60
+                    anchors.leftMargin: 44
                     anchors.verticalCenter: middle.verticalCenter
 
-                    IconButton {
-                        setIconSize: 32
-                        implicitHeight: 45
-                        implicitWidth: 45
-                        checkable: true
-                        iconBackground: "transparent"
-                        setIconColor: checked ? "#777781" : "#777781"
-                        font.bold: Font.DemiBold
-                        font.weight: Font.Normal
-                        font.pixelSize: 32
-                        font.family: root.iconFontFamily
-                        text: "\uf001"
+                    BottomNavItem {
+                        id: psi_nav
+                        iconSource: root.assetUrl("icons/bottom_bar_nav/psi_nab.svg")
+                        baseSize: 48
+                        activeSize: 48
+                        checked: root.currentPage === "psi"
+                        onClicked: root.currentPage = "psi"
                     }
 
-                    IconButton {
-                        setIconSize: 32
-                        implicitHeight: 45
-                        implicitWidth: 45
-                        checkable: true
-                        font.bold: Font.DemiBold
-                        font.weight: Font.Normal
-                        font.pixelSize: 32
-                        font.family: root.iconFontFamily
-                        iconBackground: "transparent"
-                        setIconColor: checked ? "#777781" : "#777781"
-                        text: "\uf1de"
+                    BottomNavItem {
+                        id: trip_nav
+                        glyph: "\uf1de"
+                        fontFamily: root.iconFontFamily
+                        baseSize: 36
+                        activeSize: 46
+                        checked: root.currentPage === "trip"
+                        onClicked: root.currentPage = "trip"
                     }
                 }
             }
@@ -920,114 +895,46 @@ Item {
         }
     }
 
-    Item {
-        id: torqueRequestBar
-        x: 345
-        y: 111
-        width: 334
-        height: 50
-        visible: opacity > 0
-        opacity: root.contentVisible ? 1 : 0
+    Component {
+        id: gpsPageComponent
 
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 320
-                easing.type: Easing.OutCubic
-            }
-        }
+        GpsPage {}
+    }
 
-        readonly property real horizontalPadding: 8
-        readonly property real verticalPadding: 7
-        readonly property real fillWidth: Math.max(0, width - horizontalPadding * 2)
+    Component {
+        id: adasPageComponent
 
-        Rectangle {
-            id: torqueFillClip
-            x: torqueRequestBar.horizontalPadding
-            y: torqueRequestBar.verticalPadding
-            width: torqueRequestBar.fillWidth * (root.torqueRequestPercent / 100)
-            height: torqueRequestBar.height - torqueRequestBar.verticalPadding * 2
-            radius: height / 2
-            color: "transparent"
-            clip: true
+        AdasPage {}
+    }
 
-            Behavior on width {
-                NumberAnimation {
-                    duration: 120
-                    easing.type: Easing.OutCubic
-                }
-            }
+    Component {
+        id: psiPageComponent
 
-            Rectangle {
-                width: torqueRequestBar.fillWidth
-                height: parent.height
-                radius: height / 2
-                gradient: Gradient {
-                    orientation: Gradient.Horizontal
+        PsiPage {}
+    }
 
-                    GradientStop {
-                        position: 0.0
-                        color: "#2ecc71"
-                    }
+    Component {
+        id: tripPageComponent
 
-                    GradientStop {
-                        position: 0.45
-                        color: "#a3d64f"
-                    }
+        TripPage {}
+    }
 
-                    GradientStop {
-                        position: 0.75
-                        color: "#ff9f1c"
-                    }
+    Component {
+        id: testingPageComponent
 
-                    GradientStop {
-                        position: 1.0
-                        color: "#e53935"
-                    }
-                }
-                opacity: 0.9
-            }
-        }
-
-        Rectangle {
-            x: torqueRequestBar.horizontalPadding
-            y: torqueRequestBar.verticalPadding
-            width: torqueRequestBar.fillWidth
-            height: 36
-            opacity: 0.6
-            color: "#00005555"
-            radius: 16
-            border.width: 4
-            clip: false
-            border.color: "#030ba4"
-        }
-
-        Rectangle {
-            width: 4
-            height: torqueRequestBar.height - 14
-            radius: 2
-            y: 7
-            x: torqueRequestBar.horizontalPadding + (torqueRequestBar.fillWidth * (root.torqueRequestPercent / 100)) - width / 2
-            color: "#FFFFFF"
-            opacity: 0.95
-            visible: false
-
-            Behavior on x {
-                NumberAnimation {
-                    duration: 120
-                    easing.type: Easing.OutCubic
-                }
-            }
+        TestingPage {
+            currentAmps: root.currentAmps
+            temperatureC: root.temperatureC
+            torqueRequestPercent: root.torqueRequestPercent
+            fontFamily: "Venera"
+            pageScale: root.dashboardScale
         }
     }
 
-    Image {
-        id: frame50
-        x: 353
-        y: 162
-        width: 317
-        height: 19
-        source: "images/Frame 50.png"
-        fillMode: Image.PreserveAspectFit
+    Item {
+        id: pageLayer
+        anchors.fill: parent
+        z: 1
         visible: opacity > 0
         opacity: root.contentVisible ? 1 : 0
 
@@ -1035,6 +942,25 @@ Item {
             NumberAnimation {
                 duration: 320
                 easing.type: Easing.OutCubic
+            }
+        }
+
+        Loader {
+            id: pageLoader
+            anchors.fill: parent
+            sourceComponent: {
+                switch (root.currentPage) {
+                case "adas":
+                    return adasPageComponent
+                case "psi":
+                    return psiPageComponent
+                case "trip":
+                    return tripPageComponent
+                case "testing":
+                    return testingPageComponent
+                default:
+                    return gpsPageComponent
+                }
             }
         }
     }
@@ -1085,5 +1011,19 @@ Item {
                 easing.type: Easing.OutCubic
             }
         }
+    }
+
+    MouseArea {
+        id: testing_nav
+        anchors.fill: parent
+        anchors.leftMargin: 878
+        anchors.rightMargin: 8
+        anchors.topMargin: 13
+        anchors.bottomMargin: 508
+        visible: root.contentVisible
+        enabled: visible
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
+        onClicked: root.currentPage = "testing"
     }
 }

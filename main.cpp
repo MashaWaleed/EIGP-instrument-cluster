@@ -21,10 +21,10 @@ int main(int argc, char *argv[])
     }
     qputenv("QT_QPA_EGLFS_ALWAYS_SET_MODE", "1");
     qputenv("QT_QPA_EGLFS_FORCEVSYNC", "1");
-    qputenv("QT_QPA_EGLFS_HIDECURSOR", "1");
+    //qputenv("QT_QPA_EGLFS_HIDECURSOR", "1");
     QGuiApplication app(argc, argv);
     QFontDatabase::addApplicationFont(":/Venera-700.otf");
-    QGuiApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
+    //QGuiApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
     DashboardSerialController serialController;
 
     QQmlApplicationEngine engine;
