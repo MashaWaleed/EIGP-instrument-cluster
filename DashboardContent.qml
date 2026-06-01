@@ -10,12 +10,14 @@ Item {
 
     property bool contentVisible: true
     property real leftSideLevel: 0.28
-    property real rightSideLevel: 0.34
+    property real rightSideLevel: 0.84
     property real torqueRequestPercent: 42
     property real rpm: 3200
     property real speedKph: 72
     property real currentAmps: 180
     property real temperatureC: 41
+    readonly property int batteryPercentageValue: Math.round(root.rightSideLevel * 100)
+    readonly property int batteryTempValue: Math.round(root.leftSideLevel * 100)
     property string selectedGear: "D"
     property string iconFontFamily: ""
 
@@ -417,15 +419,15 @@ Item {
 
                 Column {
                     id: leftGaugeReadout
-                    y: 609
-                    height: 54
+                    y: 373
+                    height: 300
                     anchors.horizontalCenterOffset: 0
                     anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: -4
+                    spacing: 180
 
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        font.pixelSize: 42
+                        font.pixelSize: 70
                         font.bold: true
                         font.weight: Font.DemiBold
                         font.family: "Venera"
@@ -435,7 +437,7 @@ Item {
 
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        font.pixelSize: 16
+                        font.pixelSize: 30
                         font.bold: true
                         font.weight: Font.Medium
                         font.family: "Venera"
@@ -461,8 +463,8 @@ Item {
 
                 CircularGaugeMeter {
                     id: rightGaugeMeter
-                    width: 585
-                    height: 585
+                    width: 620
+                    height: 620
                     anchors.centerIn: parent
                     value: root.speedKph
                     maximumValue: 220
@@ -474,21 +476,23 @@ Item {
                             duration: 1000
                         }
                     }
+                    anchors.verticalCenterOffset: -10
+                    anchors.horizontalCenterOffset: 0
                 }
 
                 Column {
                     id: rightGaugeReadout
-                    y: 595
+                    y: 352
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: 84
-                    height: 76
-                    anchors.horizontalCenterOffset: 6
+                    width: 180
+                    height: 307
+                    anchors.horizontalCenterOffset: 0
                     bottomPadding: 0
-                    spacing: -4
+                    spacing: 190
 
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        font.pixelSize: 42
+                        font.pixelSize: 70
                         font.bold: true
                         font.weight: Font.DemiBold
                         font.family: "Venera"
@@ -498,7 +502,7 @@ Item {
 
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        font.pixelSize: 16
+                        font.pixelSize: 30
                         font.bold: true
                         font.weight: Font.Medium
                         font.family: "Venera"
@@ -557,9 +561,9 @@ Item {
                             id: leftFillGradient
                             anchors.fill: parent
                             gradient: Gradient {
-                                GradientStop { position: 0.0; color: "#F3F6FA" }
-                                GradientStop { position: 0.55; color: "#EBF1F6" }
-                                GradientStop { position: 1.0; color: "#89C34A" }
+                                GradientStop { position: 0.0; color: "#e53935" }
+                                GradientStop { position: 0.55; color: "#ffb300" }
+                                GradientStop { position: 1.0; color: "#2ecc71" }
                             }
                         }
 
@@ -662,9 +666,9 @@ Item {
                             id: rightFillGradient
                             anchors.fill: parent
                             gradient: Gradient {
-                                GradientStop { position: 0.0; color: "#F3F6FA" }
-                                GradientStop { position: 0.55; color: "#EBF1F6" }
-                                GradientStop { position: 1.0; color: "#89C34A" }
+                                GradientStop { position: 0.0; color: "#2ecc71" }
+                                GradientStop { position: 0.55; color: "#ffb300" }
+                                GradientStop { position: 1.0; color: "#e53935" }
                             }
                         }
 
@@ -721,6 +725,9 @@ Item {
             }
 
             Image {
+                y: 867
+                width: 908
+                height: 133
                 sourceSize: Qt.size(topBar.width, topBar.height)
                 source: "icons/bottom.png"
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -1023,6 +1030,54 @@ Item {
         fillMode: Image.PreserveAspectFit
         visible: opacity > 0
         opacity: root.contentVisible ? 1 : 0
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 320
+                easing.type: Easing.OutCubic
+            }
+        }
+    }
+
+    Text {
+        id: batteryPercentage
+        y: 264
+        width: 44
+        height: 14
+        visible: opacity > 0
+        opacity: root.contentVisible ? 1 : 0
+        color: "#72d6ff"
+        text: root.batteryPercentageValue + "%"
+        font.pixelSize: 13
+        anchors.horizontalCenterOffset: 482
+        font.weight: Font.DemiBold
+        font.family: "Venera"
+        font.bold: true
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 320
+                easing.type: Easing.OutCubic
+            }
+        }
+    }
+
+    Text {
+        id: batteryTemp
+        y: 264
+        width: 55
+        height: 14
+        visible: opacity > 0
+        opacity: root.contentVisible ? 1 : 0
+        color: "#72d6ff"
+        text: root.batteryTempValue + "°C"
+        font.pixelSize: 13
+        font.weight: Font.DemiBold
+        font.family: "Venera"
+        font.bold: true
+        anchors.horizontalCenterOffset: -476
+        anchors.horizontalCenter: parent.horizontalCenter
 
         Behavior on opacity {
             NumberAnimation {
