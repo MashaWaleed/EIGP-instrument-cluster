@@ -1,0 +1,42 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Panel.png</file>
+        <file>Speedometer.png</file>
+        <file>Tacometer.png</file>
+        <file>Top Bar.png</file>
+        <file>CircularGaugeMeter.qml</file>
+        <file>icons/icons-left/icon-park-solid_right-two.svg</file>
+        <file>icons/icons-left/mdi_car-battery.svg</file>
+        <file>icons/icons-left/mdi_car-handbrake.svg</file>
+        <file>icons/icons-left/mdi_car-tire-alert.svg</file>
+        <file>icons/icons-left/mdi_oil.svg</file>
+        <file>icons/icons-left/ph_engine-bold.svg</file>
+        <file>icons/icons-right/icon-park-solid_right-two.svg</file>
+        <file>icons/icons-right/mdi_car-brake-parking.svg</file>
+        <file>icons/icons-right/mdi_car-light-dimmed.svg</file>
+        <file>icons/icons-right/mdi_car-light-fog.svg</file>
+        <file>icons/icons-right/mdi_car-light-high.svg</file>
+        <file>icons/icons-right/mdi_seatbelt.svg</file>
+        <file>Component/IconButton.qml</file>
+        <file>icons/icons-left-checked/icon-park-solid_right-two.svg</file>
+        <file>icons/icons-left-checked/mdi_car-battery.svg</file>
+        <file>icons/icons-left-checked/mdi_car-handbrake.svg</file>
+        <file>icons/icons-left-checked/mdi_car-tire-alert.svg</file>
+        <file>icons/icons-left-checked/mdi_oil.svg</file>
+        <file>icons/icons-left-checked/ph_engine-bold.svg</file>
+        <file>icons/icons-right-checked/icon-park-solid_right-two.svg</file>
+        <file>icons/icons-right-checked/mdi_car-brake-parking.svg</file>
+        <file>icons/icons-right-checked/mdi_car-light-dimmed.svg</file>
+        <file>icons/icons-right-checked/mdi_car-light-fog.svg</file>
+        <file>icons/icons-right-checked/mdi_car-light-high.svg</file>
+        <file>icons/icons-right-checked/mdi_seatbelt.svg</file>
+        <file>icons/cloud.svg</file>
+        <file>icons/bottom.png</file>
+        <file>icons/Vector 1.svg</file>
+        <file>icons/Vector 1.png</file>
+        <file>icons/desal.svg</file>
+        <file>icons/feaul.svg</file>
+        <file>fontawesome.otf</file>
+    </qresource>
+</RCC>
