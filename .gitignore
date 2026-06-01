@@ -1,0 +1,31 @@
+# Build outputs
+/build/
+/rpi/build/
+
+# Qt Creator / Qt Design Studio
+/.qtcreator/
+/rpi/.qtcreator/
+*.pro.user
+*.pro.user.*
+*.qmlproject.user
+*.qmlproject.user.*
+*.qbs.user
+*.qtc_clangd/
+
+# CMake
+CMakeUserPresets.json
+
+# Generated QML cache / compiled artifacts
+*.qmlc
+*.jsc
+*.metainfo
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
