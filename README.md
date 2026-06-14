@@ -1,62 +1,81 @@
 # EIGP Instrument Cluster
 
-Qt Quick / QML instrument cluster application for Raspberry Pi 5 running Boot2Qt.
+Qt Quick instrument cluster for Raspberry Pi 5 running Boot2Qt.
 
-## Overview
+## Features
 
-This project renders a custom EV-style dashboard UI and feeds it with live or simulated vehicle data.
+- Full-screen QML dashboard with splash screen
+- UART-backed torque input via `DashboardSerialController`
+- Derived RPM, speed, current, and temperature values for bench testing
+- Spacebar keyboard fallback for torque input during development
 
-- QML-based instrument cluster UI with splash screen and dashboard composition
-- UART-backed torque request input through `DashboardSerialController`
-- Derived dummy RPM, speed, current, and temperature values for testing
-- Keyboard fallback using the spacebar for torque request testing
-- Hidden mouse cursor for full-screen HMI deployment
+## Project layout
 
-## Project Layout
-
-- `main.cpp`: Qt application bootstrap and `serialController` context setup
-- `main.qml`: composition root that wires splash screen and dashboard content
-- `DashboardContent.qml`: main instrument cluster UI
-- `SplashScreen.qml`: startup splash animation
-- `dashboardserialcontroller.cpp` / `dashboardserialcontroller.h`: UART input and generated dashboard data
-- `qml.qrc`: Qt resource manifest for QML, images, icons, and fonts
-- `Component/`: reusable QML UI components
+```text
+.
+├── src/                              # C++ application code
+│   ├── main.cpp
+│   └── dashboardserialcontroller.{h,cpp}
+├── qml/                              # QML UI
+│   ├── main.qml                      # Application root
+│   ├── DashboardContent.qml          # Main instrument cluster
+│   ├── SplashScreen.qml
+│   ├── CircularGaugeMeter.qml
+│   ├── components/                   # Reusable QML components
+│   └── pages/                        # Secondary dashboard pages
+├── assets/                           # Bundled media (listed in resources/qml.qrc)
+│   ├── fonts/
+│   ├── icons/
+│   ├── images/
+│   └── panels/                       # Gauge and panel artwork
+├── resources/
+│   └── qml.qrc                       # Qt resource manifest
+├── Dashboard.qmlproject              # Qt Design Studio project
+├── CMakeLists.txt
+└── docs/raspberry-pi5/README.md      # Boot2Qt image and deployment guide
+```
 
 ## Requirements
 
-- Qt 6 with `Core`, `Quick`, `Qml`, and `SerialPort`
+- Qt 6.10+ with `Core`, `Quick`, `Qml`, and `SerialPort`
 - CMake 3.16+
-- Raspberry Pi 5 / Boot2Qt target for deployment
+- Boot2Qt toolchain for Raspberry Pi 5 — see [docs/raspberry-pi5/README.md](docs/raspberry-pi5/README.md)
 
 ## Build
 
-```bash
-cmake -S . -B build
-cmake --build build --target untitled
-```
-
-For this workspace, the validated Boot2Qt build directory is:
+### Desktop (local Qt)
 
 ```bash
-cmake --build /home/masha/untitled/build/6.10.3-raspberrypi-armv8-Debug --target untitled
+cmake -S . -B build/desktop-Debug -DCMAKE_BUILD_TYPE=Debug
+cmake --build build/desktop-Debug --target eigp-instrument-cluster
 ```
 
-## Serial Input
+### Raspberry Pi 5 (Boot2Qt cross-build)
 
-The dashboard reads torque request input from UART and also supports a keyboard override.
+```bash
+source /home/masha/Qt/6.10.3/Boot2Qt/raspberrypi-armv8/toolchain/environment-setup-cortexa53-poky-linux
 
-- `DASHBOARD_SERIAL_PORT`: override the serial device path
-- `DASHBOARD_SERIAL_BAUD`: override the baud rate
+cmake -S . -B build/raspberrypi-armv8-Debug -DCMAKE_BUILD_TYPE=Debug
+cmake --build build/raspberrypi-armv8-Debug --target eigp-instrument-cluster install
+```
 
-Accepted UART payload examples:
+Open the project in Qt Creator with the **Custom Qt 6.10.3 raspberrypi-armv8** kit for integrated build and deploy.
 
-- `42`
-- `torque=42`
+## Serial input
 
-Holding the spacebar in the app also drives the torque request path for testing.
+The dashboard reads torque request values from UART and accepts a keyboard override for testing.
 
-## Notes
+| Variable | Description |
+|----------|-------------|
+| `DASHBOARD_SERIAL_PORT` | Serial device path override |
+| `DASHBOARD_SERIAL_BAUD` | Baud rate override |
 
-- QML assets used by the app must be listed in `qml.qrc`.
-- The deployed binary target is currently named `untitled`.
-- The repository name is `EIGP-instrument-cluster`, but the application target has not been renamed yet.
+Accepted UART payload examples: `42` or `torque=42`
+
+Hold the spacebar in the running app to drive the torque path without serial hardware.
+
+## Development notes
+
+- All QML and asset files consumed at runtime must be listed in `resources/qml.qrc`.
+- Qt Design Studio uses `Dashboard.qmlproject`; CMake builds from `resources/qml.qrc`.
+- Deployment target on device: `/opt/Dashboard` (configured in `Dashboard.qmlproject`).

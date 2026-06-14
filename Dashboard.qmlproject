@@ -1,30 +1,30 @@
 import QmlProject
 
 Project {
-    mainFile: "main.qml"
-    mainUiFile: "main.qml"
+    mainFile: "qml/main.qml"
+    mainUiFile: "qml/main.qml"
     qt6Project: true
 
     QmlFiles {
-        directory: "."
+        directory: "qml"
     }
 
     JavaScriptFiles {
-        directory: "."
+        directory: "qml"
     }
 
     ImageFiles {
-        directory: "."
+        directory: "assets"
     }
 
     Files {
         filter: "*.svg;*.otf;*.ttf;*.qgltf;*.bin;*.pro;*.qrc;*.md"
-        directory: "."
+        directory: "assets"
     }
 
     Files {
         filter: "qmldir"
-        directory: "."
+        directory: "qml"
     }
 
     Environment {
@@ -33,6 +33,6 @@ Project {
         QT_ENABLE_HIGHDPI_SCALING: "0"
     }
 
-    importPaths: [ ".", "Component" ]
+    importPaths: [ "qml", "qml/components", "qml/pages" ]
     targetDirectory: "/opt/Dashboard"
 }

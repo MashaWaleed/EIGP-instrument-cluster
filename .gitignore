@@ -1,14 +1,15 @@
 # Build outputs
 /build/
-/rpi/build/
+**/build-*-Debug/
+**/build-*-Release/
 
 # Qt Creator / Qt Design Studio
 /.qtcreator/
-/rpi/.qtcreator/
 *.pro.user
 *.pro.user.*
 *.qmlproject.user
 *.qmlproject.user.*
+*.qmlproject.qtds
 *.qbs.user
 *.qtc_clangd/
 
@@ -19,6 +20,9 @@ CMakeUserPresets.json
 *.qmlc
 *.jsc
 *.metainfo
+
+# Vendored or IDE-generated import trees
+/imports/
 
 # Logs and temp files
 *.log
