@@ -1,0 +1,29 @@
+# Example override for /usr/lib/systemd/system/b2qt.service
+#
+# Install on the Pi:
+#   sudo cp can0.service /etc/systemd/system/
+#   sudo systemctl enable can0.service
+#
+#   sudo systemctl edit b2qt.service
+#   (paste the [Service] Environment and ExecStart lines below, or replace ExecStart)
+#
+# Then:
+#   sudo systemctl daemon-reload
+#   sudo systemctl restart can0.service b2qt.service
+
+[Unit]
+Description=B2Qt user application
+After=can0.service
+Wants=can0.service
+
+[Service]
+User=root
+Environment=QT_QPA_EGLFS_TOUCHSCREEN=/dev/input/event4
+Environment=QT_QPA_EVDEV_TOUCHSCREEN_PARAMETERS=/dev/input/event4
+Environment=QT_QPA_EGLFS_HIDECURSOR=1
+# Match your panel if it is 1024x600 (see README display section):
+# Environment=QT_QPA_EGLFS_KMS_CONFIG=/etc/eigp/eglfs-kms.json
+ExecStart=-/usr/bin/sh -c "XDG_RUNTIME_DIR=/run/user/$(id -u) /usr/bin/appcontroller /usr/bin/eigp-instrument-cluster"
+
+[Install]
+WantedBy=multi-user.target

@@ -79,13 +79,98 @@ cmake --build /home/masha/Projects/EIGP-instrument-cluster/build/raspberrypi-arm
 
 The installed binary lands under the CMake install prefix configured for your kit (default deployment target in Qt Design Studio: `/opt/Dashboard`).
 
+## Display sizing (squished UI)
+
+The dashboard UI is designed for **1024×600**. If the framebuffer reports a different size (for example `1024,768` from `/sys/class/graphics/fb0/virtual_size`), EGLFS may stretch or squash the scene.
+
+**Check on the Pi:**
+
+```bash
+cat /sys/class/graphics/fb0/virtual_size
+```
+
+If this is not `1024,600` for your panel, fix the display mode before tuning the app.
+
+**App-side fix (included in this repo):** `qml/main.qml` runs full-screen using `Screen.width` / `Screen.height` on Linux instead of a hard-coded 1024×600 window.
+
+**Force the correct mode (recommended for a 1024×600 panel):**
+
+1. Copy the KMS config to the Pi:
+
+   ```bash
+   sudo mkdir -p /etc/eigp
+   sudo cp docs/raspberry-pi5/eglfs-kms.json /etc/eigp/eglfs-kms.json
+   ```
+
+2. Add to `b2qt.service` (see `b2qt.service.example`):
+
+   ```ini
+   Environment=QT_QPA_EGLFS_KMS_CONFIG=/etc/eigp/eglfs-kms.json
+   Environment=QT_QPA_EGLFS_ALWAYS_SET_MODE=1
+   ```
+
+3. Reload and restart:
+
+   ```bash
+   sudo systemctl daemon-reload
+   sudo systemctl restart b2qt.service
+   ```
+
+Physical panel size (optional, affects DPI) can be set in `b2qt.service`:
+
+```ini
+Environment=QT_QPA_EGLFS_PHYSICAL_WIDTH=154
+Environment=QT_QPA_EGLFS_PHYSICAL_HEIGHT=90
+```
+
+If the framebuffer is taller than the physical panel (for example 1024×768 signal to a 1024×600 display), set the real panel height so the app can compensate:
+
+```ini
+Environment=EIGP_PANEL_HEIGHT=600
+```
+
+Defaults in `main.cpp` are 154×90 mm. Override via environment instead of rebuilding when possible.
+
+Your Pi uses **HDMI-A-2** on **card0** (not HDMI-A-1). The repo `eglfs-kms.json` targets that connector.
+
+**Update the boot service binary name:** your service still launches `/usr/bin/untitled`. After deploying this project, change it to `/usr/bin/eigp-instrument-cluster` (see `b2qt.service.example`).
+
+## CAN interface at boot
+
+Do **not** put `ip link` commands in `b2qt.service` directly. Use a dedicated systemd unit that runs **before** the app.
+
+1. Copy the unit file to the Pi:
+
+   ```bash
+   sudo cp docs/raspberry-pi5/can0.service /etc/systemd/system/
+   ```
+
+2. Enable it:
+
+   ```bash
+   sudo systemctl enable can0.service
+   sudo systemctl start can0.service
+   ```
+
+3. Verify:
+
+   ```bash
+   ip -details link show can0
+   ```
+
+4. Make `b2qt.service` start after CAN (see `b2qt.service.example`):
+
+   ```ini
+   After=can0.service
+   Wants=can0.service
+   ```
+
+   Then `sudo systemctl daemon-reload`.
+
 ## Runtime notes
 
 - The application targets EGLFS full-screen rendering on Boot2Qt.
-- Physical display dimensions are configured in `main.cpp` via `QT_QPA_EGLFS_PHYSICAL_WIDTH` and `QT_QPA_EGLFS_PHYSICAL_HEIGHT`.
-- UART input for torque requests is read by `DashboardSerialController`. Override the port and baud rate with environment variables:
-  - `DASHBOARD_SERIAL_PORT`
-  - `DASHBOARD_SERIAL_BAUD`
+- Vehicle firmware reads dashboard telemetry from CAN (`can0`, MCP2515). See [../can-protocol.md](../can-protocol.md). Override the interface with `EIGP_CAN_INTERFACE` if needed.
 - USB OTG device mode is supported on Raspberry Pi 4 only; use network deployment for Pi 5.
 
 ## Updating the image

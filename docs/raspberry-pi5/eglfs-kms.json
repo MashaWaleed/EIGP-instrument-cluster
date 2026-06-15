@@ -1,0 +1,10 @@
+{
+  "hwcursor": false,
+  "device": "/dev/dri/card0",
+  "outputs": [
+    {
+      "name": "HDMI-A-2",
+      "mode": "1024x768"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+[Unit]
+Description=Bring up MCP2515 CAN interface can0
+After=network-pre.target
+Before=b2qt.service
+Wants=network-pre.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/sbin/ip link set can0 down
+ExecStart=/sbin/ip link set can0 type can bitrate 125000 restart-ms 100
+ExecStart=/sbin/ip link set can0 up
+
+[Install]
+WantedBy=multi-user.target
